@@ -4,7 +4,7 @@
 
 Variedade de testes no ambiente ReactJS:
 
-- Tdd
+- TDD
 - Simulando cliques do usuário
 - Testando API's nativas
 - Testando components conectados
