@@ -5,16 +5,32 @@ export default class TodoList extends Component {
     todos: []
   };
 
+  componentDidMount() {
+    const todos = localStorageMock.getItem("todos");
+
+    if (todos) {
+      this.setState({ todos: JSON.parse(todos) });
+    }
+  }
+
+  saveTodos = () => {
+    localStorageMock.setItem("todos", JSON.stringify(this.state.todos));
+  };
+
   addTodo = () => {
     this.setState({
       todos: [...this.state.todos, { id: Math.random(), text: "Novo todo" }]
     });
+
+    this.saveTodos();
   };
 
   removeTodo = id => {
     this.setState({
       todos: this.state.todos.filter(todo => todo.id !== id)
     });
+
+    this.saveTodos();
   };
 
   render() {

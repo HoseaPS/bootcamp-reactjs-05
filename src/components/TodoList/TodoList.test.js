@@ -1,6 +1,7 @@
 import React from "react";
 import { shallow } from "enzyme";
 import TodoList from "./index";
+import sinon from "sinon";
 
 const todos = [
   { id: 0, text: "Fazer café" },
@@ -44,5 +45,23 @@ describe("TodoList component", () => {
       .simulate("click");
 
     expect(wrapper.state("todos")).not.toContain(todos[0]);
+  });
+
+  it("should load todos from localStorage", () => {
+    sinon.stub(localStorageMock, "getItem").returns(JSON.stringify(todos));
+
+    const wrapper = shallow(<TodoList />);
+
+    expect(wrapper.state("todos")).toEqual(todos);
+  });
+
+  it("should save todos to localStorage when added new todo", () => {
+    const spy = sinon.spy(localStorageMock, "setItem");
+
+    const wrapper = shallow(<TodoList />);
+
+    wrapper.instance().addTodo();
+
+    expect(spy.calledOnce).toBe(true);
   });
 });
